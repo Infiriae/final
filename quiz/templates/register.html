@@ -19,7 +19,7 @@
     <div class="row flex bg-primary">
         <div class="col">
             <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-                <a class="navbar-brand text-white" href="#">Navbar</a>
+                <a class="navbar-brand text-white" href="#">Navigator</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -32,17 +32,25 @@
                             <a class="nav-link text-white" href="/quiz/reg">Register!</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/quiz/profile">Profile</a>
+                            {% if request.session.user_id == None %}
+                            <a class="nav-link text-white disabled" href="/quiz/profile">Profile</a> {% else %}
+                            <a class="nav-link text-white" href="/quiz/profile">Profile</a> {% endif %}
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled text-white" href="#">Disabled</a>
+                            {% if request.session.user_id == None %}
+                            <a class="nav-link text-white" href="/quiz/login">Log in</a> {% else %}
+                            <a class="nav-link text-white" href="/quiz/logout">Log out</a> {% endif %}
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
         <div class="col">
-            <p class="text-center pt-3 text-white">Welcome {{user.id}}</p>
+            {% if request.session.user_id > 0 %}
+            <p class="text-center pt-3 text-white">Welcome {{request.session.user_name}}</p>
+            {% else %}
+            <p class="text-center pt-3 text-white">Welcome Unregistered User</p>
+            {% endif %}
         </div>
     </div>
     <h1 class="text-center">Internet users! <br>What do they know?<br>Do they know things?<br>Let's find out!</h1>

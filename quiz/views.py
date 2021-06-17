@@ -15,13 +15,13 @@ def success(request):
     return render(request,"index.html")
 
 
-def add_movie(request):
-    errors = Movie.objects.validate(request.POST)
+# def add_movie(request):
+#     errors = Movie.objects.validate(request.POST)
 
-    if errors:
-        for error in errors.values():
-            messages.error(request,error)
-        return redirect("/")
+#     if errors:
+#         for error in errors.values():
+#             messages.error(request,error)
+#         return redirect("/")
 
 def register(request):
 
@@ -82,30 +82,33 @@ def login(request):
         return redirect('/quiz/reg')
 
 
-def like(request,id):
+# def like(request,id):
 
-    user = User.objects.get(id=request.session["user_logged_in"])
+#     user = User.objects.get(id=request.session["user_logged_in"])
 
-    quote = Quote.objects.get(id=id)
+#     quote = Quote.objects.get(id=id)
 
-    quote.fans.add(user)
+#     quote.fans.add(user)
 
-    movie_id = quote.movie.id
+#     movie_id = quote.movie.id
 
-    return redirect(f'/quotes/{movie_id}')
+#     return redirect(f'/quotes/{movie_id}')
 
 
-def activity(request):
+def profile(request):
+    id = request.session['user_id']
+    logged_user = User.objects.filter(id=id)
+    logged_user = logged_user[0]
     context = {
-    
+        "name" : f"{logged_user.first_name} {logged_user.last_name}"
     }
-    return render(request,"activity.html",context)
+    return render(request,"profile.html",context)
 
 def logout(request):
 
     request.session.flush()
 
-    return redirect('/')
+    return redirect('/quiz')
 
 def create_post(request):
     
